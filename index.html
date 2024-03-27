@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>HTML5 Example Page</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="HTML5 Example Page">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        #map {
+            height: 100vh;
+        }
+        img.huechange { filter: hue-rotate(120deg); }
+    </style>
+</head>
+
+<body>
+    <input id="srcStationInput" value="" placeholder="HWH"/>
+    <!-- <input id="srcStation" value="" placeholder="HWH"/> -->
+    <div id="map"></div>
+    <script>
+        // var marker = L.marker([51.5, -0.09]).addTo(map);
+        // marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+        // var circle = L.circle([51.508, -0.11], {
+        //     color: 'red',
+        //     fillColor: '#f03',
+        //     fillOpacity: 0.5,
+        //     radius: 500
+        // }).addTo(map);
+        // var polygon = L.polygon([
+        //     [51.509, -0.08],
+        //     [51.503, -0.06],
+        //     [51.51, -0.047]
+        // ]).addTo(map);
+
+        // // create a red polyline from an array of LatLng points
+        // var latlngs = [
+        //     [51.509, -0.08],
+        //     [51.503, -0.06],
+        //     [51.51, -0.047]
+        // ];
+
+        // var polyline = L.polyline(latlngs, { color: 'purple' }).addTo(map);
+        // var popup = L.popup()
+        //     .setLatLng([51.513, -0.09])
+        //     .setContent("I am a standalone popup.")
+        //     .openOn(map);
+
+        // function onMapClick(e) {
+        //     console.error("Map clicked");
+        //     console.warn("Map clicked");
+        //     console.log("Map clicked");
+        //     alert("hi " + e.latlng);
+        //     L.popup()
+        //     .setLatLng(e.latlng)
+        //     .setContent("You clicked the map at " + e.latlng)
+        //     .openPopup();
+        // }
+
+        // map.on('click', onMapClick);
+        // // zoom the map to the polyline
+        // map.fitBounds(polyline.getBounds());
+        // let Position = L.Control.extend({
+        //     _container: null,
+        //     options: {
+        //         position: 'bottomleft'
+        //     },
+
+        //     onAdd: function (map) {
+        //         var latlng = L.DomUtil.create('div', 'mouseposition');
+        //         this._latlng = latlng;
+        //         return latlng;
+        //     },
+
+        //     updateHTML: function (lat, lng) {
+        //         var latlng = lat + " " + lng;
+        //         //this._latlng.innerHTML = "Latitude: " + lat + "   Longitiude: " + lng;
+        //         this._latlng.innerHTML = "LatLng: " + latlng;
+        //     }
+        // });
+        // map.addEventListener('mousemove', (event) => {
+        //     let lat = Math.round(event.latlng.lat * 100000) / 100000;
+        //     let lng = Math.round(event.latlng.lng * 100000) / 100000;
+        //     this.position.updateHTML(lat, lng);
+        // });
+        // map.addEventListener('mouseclick', (event) => {
+        //     let lat = Math.round(event.latlng.lat * 100000) / 100000;
+        //     let lng = Math.round(event.latlng.lng * 100000) / 100000;
+        //     console.log(lat, lng);
+        // });
+        // this.position = new Position();
+        // map.addControl(this.position);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/sql-wasm.js"></script>
+    <script type="module" src="./railway_query_web.js"></script>
+</body>
+
+</html>

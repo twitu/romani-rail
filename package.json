@@ -1,0 +1,18 @@
+{
+  "name": "railway-data",
+  "version": "1.0.0",
+  "description": "https://data.gov.in/resource/indian-railways-time-table-trains-available-reservation-01112017",
+  "main": "railway_query.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/geojson": "^7946.0.14",
+    "@types/leaflet": "^1.9.8",
+    "leaflet": "^1.9.4",
+    "leaflet-search": "^4.0.0",
+    "sql.js": "^1.10.2"
+  }
+}
