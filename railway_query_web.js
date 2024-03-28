@@ -62,6 +62,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 //... adding data in searchLayer ...
 // map.addControl( new L.Control.Search({layer: searchLayer}) );
 let db;
+let markerGroup = [];
 async function main() {
   let SQL = await Promise.resolve(initSqlJs(config));
   console.log("sql.js initialized 🎉");
@@ -80,15 +81,20 @@ await main();
 // run_query("HWH")
 
 function run_query(sourceStation) {
+  // clear previous markerGroup before running a query
+  for (const marker of markerGroup) {
+    map.removeLayer(marker)
+  }
+
   const query_result = db.exec(dstStnQry(sourceStation));
   console.log(query_result);
   console.log(query_result[0]['columns'])
   console.table(query_result[0]['values'])
   for (const station of Object.values(query_result[0]['values'])) {
     console.log(station)
-    show_station(station)
+    markerGroup.push(show_station(station))
   }
-  showSourceStation()
+  markerGroup.push(showSourceStation())
 }
 
 function show_station(station) {
@@ -106,6 +112,8 @@ function show_station(station) {
     // let chart_div = document.getElementById("graphdiv");
     popup.setContent(train_name);
   })
+  
+  return marker
 }
 
 function showSourceStation() {
@@ -116,4 +124,5 @@ function showSourceStation() {
   //   console.log(e.latlng);
   // });
   marker._icon.classList.add("huechange");
+  return marker
 }
