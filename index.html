@@ -14,15 +14,37 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <style>
         #map {
+            top: 100px;
             height: 100vh;
         }
-        img.huechange { filter: hue-rotate(120deg); }
+
+        img.huechange {
+            filter: hue-rotate(120deg);
+        }
+
+        #suggestions {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            display: none;
+            z-index: 99;
+        }
+
+        .suggestion {
+            cursor: pointer;
+            padding: 5px;
+            z-index: inherit;
+        }
+
+        .suggestion:hover {
+            background: #eee;
+        }
     </style>
 </head>
 
 <body>
-    <input id="srcStationInput" value="" placeholder="HWH"/>
-    <!-- <input id="srcStation" value="" placeholder="HWH"/> -->
+    <input type="txt" id="srcStationInput" value="" placeholder="HWH" />
+    <div id="suggestions"></div>
     <div id="map"></div>
     <script>
         // var marker = L.marker([51.5, -0.09]).addTo(map);

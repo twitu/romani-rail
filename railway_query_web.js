@@ -59,10 +59,42 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 //   run_query(text)
 // }
 
+// TODO: load from database
+const input = document.getElementById('srcStationInput');
+const suggestions = document.getElementById('suggestions');
+
+function showSuggestions() {
+  const value = input.value;
+  if (!value) {
+    suggestions.style.display = 'none';
+    return;
+  }
+
+  let data = db.exec(`SELECT station_name, station_code FROM stations WHERE station_name LIKE "%${value.toUpperCase()}%" AND lat IS NOT NULL`)
+  const matchedCities = Object.values(data[0]['values'])
+
+  suggestions.innerHTML = '';
+  matchedCities.forEach(city => {
+    const div = document.createElement('div');
+    div.textContent = city;
+    div.classList.add('suggestion');
+    div.onclick = () => {
+      input.value = `${city[0]} ${city[1]}`;
+      suggestions.style.display = 'none';
+    };
+    suggestions.appendChild(div);
+  });
+
+  suggestions.style.display = matchedCities.length ? 'block' : 'none';
+  console.log(suggestions.style.display)
+}
+
+
 //... adding data in searchLayer ...
 // map.addControl( new L.Control.Search({layer: searchLayer}) );
 let db;
 let markerGroup = [];
+let cities = []
 async function main() {
   let SQL = await Promise.resolve(initSqlJs(config));
   console.log("sql.js initialized 🎉");
@@ -70,11 +102,15 @@ async function main() {
   const buf = await Promise.resolve(fetch("http://127.0.0.1:4000/train_schedule.db").then(res => res.arrayBuffer()));
   console.log("Create db");
   db = new SQL.Database(new Uint8Array(buf));
-  document.getElementById("srcStationInput").addEventListener('click', function(e) {
-    if (e.currentTarget.value !== "") {
-      run_query(e.currentTarget.value);
-    }
-  })
+  let input = document.getElementById("srcStationInput")
+  // input.addEventListener('click', function(e) {
+  //   if (e.currentTarget.value !== "") {
+  //     run_query(e.currentTarget.value);
+  //   }
+  // })
+  input.addEventListener('click', showSuggestions);
+  input.addEventListener('oninput', showSuggestions);
+  input.addEventListener('blur', () => setTimeout(() => (suggestions.style.display = 'none'), 200));
 }
 
 await main();
@@ -126,3 +162,4 @@ function showSourceStation() {
   marker._icon.classList.add("huechange");
   return marker
 }
+
