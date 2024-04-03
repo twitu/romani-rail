@@ -14,7 +14,7 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <style>
         #map {
-            top: 100px;
+            z-index: 0;
             height: 100vh;
         }
 
@@ -27,7 +27,7 @@
             background: white;
             border: 1px solid #ccc;
             display: none;
-            z-index: 99;
+            z-index: 1;
         }
 
         .suggestion {
@@ -45,6 +45,7 @@
 <body>
     <input type="txt" id="srcStationInput" value="" placeholder="HWH" />
     <div id="suggestions"></div>
+    <button id="submit"></button>
     <div id="map"></div>
     <script>
         // var marker = L.marker([51.5, -0.09]).addTo(map);

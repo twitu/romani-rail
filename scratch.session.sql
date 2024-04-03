@@ -1,1 +1,0 @@
-SELECT train_name from trains where train_no == 13071
