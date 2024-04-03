@@ -4,6 +4,16 @@ let config = {
 };
 
 
+function trainRouteQuery(trainCode) {
+  return `
+SELECT train_schedule.station_code, stations.lat, stations.long
+FROM train_schedule
+JOIN stations ON train_schedule.station_code = stations.station_code
+WHERE train_schedule.train_no = ${trainCode} AND lat is NOT NULL
+ORDER BY train_schedule.seq ASC;
+`
+}
+
 function dstStnQry(srcStn) {
   return `
 WITH evening_trains AS (
@@ -127,12 +137,12 @@ function run_query(sourceStation) {
   console.table(query_result[0]['values'])
   for (const station of Object.values(query_result[0]['values'])) {
     console.log(station)
-    markerGroup.push(show_station(station))
+    markerGroup.push(show_station(station, sourceStation))
   }
   markerGroup.push(showSourceStation(sourceStation))
 }
 
-function show_station(station) {
+function show_station(station, startStation) {
   let train_name;
   let marker = L.marker(station.slice(4, 6))
     .addTo(map)
@@ -146,7 +156,10 @@ function show_station(station) {
     let popup = e.target.getPopup();
     // let chart_div = document.getElementById("graphdiv");
     popup.setContent(train_name);
+    showTrainRoute(station[0], startStation, station[2])
   })
+  
+  marker.getElement().dataset.stnCode = station[2]
 
   return marker
 }
@@ -159,5 +172,43 @@ function showSourceStation(stnCode) {
     .addTo(map)
 
   marker._icon.classList.add("huechange");
+  marker.getElement().dataset.stnCode = stnCode
+
   return marker
+}
+
+
+function showTrainRoute(trainCode, startStation, endStation) {
+  let data = db.exec(trainRouteQuery(trainCode))
+  data = data[0]['values']
+  let points = []
+  let takePoints = false
+
+  for (const stn of Object.values(data)) {
+    if (stn[0] === startStation) {
+      takePoints = true
+    }
+
+    if (takePoints === true) {
+      points.push(stn.slice(1, 3))
+    }
+
+    if (takePoints === true && stn[0] === endStation) {
+      takePoints = false
+    }
+  }
+  
+  for (const marker of markerGroup) {
+    if (![startStation, endStation].includes(marker.getElement().dataset.stnCode)) {
+      marker.getElement().style.opacity = 0.5
+    }
+  }
+
+  let line = L.polyline(points, {
+    color: 'red',
+    weight: 3,
+    opacity: 0.5,
+    smoothFactor: 1
+  })
+  line.addTo(map);
 }
