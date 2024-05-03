@@ -1,6 +1,6 @@
 // Load sql.js WebAssembly file
 let config = {
-  locateFile: () => "/node_modules/sql.js/dist/sql-wasm.wasm",
+  locateFile: () =>"https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.wasm",
 };
 
 
@@ -110,7 +110,7 @@ async function main() {
   let SQL = await Promise.resolve(initSqlJs(config));
   console.log("sql.js initialized 🎉");
   console.log("here");
-  const buf = await Promise.resolve(fetch("http://127.0.0.1:4000/train_schedule.db").then(res => res.arrayBuffer()));
+  const buf = await Promise.resolve(fetch("./train_schedule.db").then(res => res.arrayBuffer()));
   console.log("Create db");
   db = new SQL.Database(new Uint8Array(buf));
   let input = document.getElementById("srcStationInput")
